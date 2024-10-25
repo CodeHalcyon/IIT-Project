@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Donor Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 50px; }
+        .btn-location { margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><i class="fas fa-seedling"></i> Zero Hunger</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="/donate"><i class="fas fa-hand-holding-heart"></i> Donate</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="text-center">Donor Registration</h1>
+    <form id="donorForm" method="post">
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your name" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+        </div>
+        <div class="mb-3">
+            <label for="foodType" class="form-label">Type of Food Donation</label>
+            <select class="form-select" id="foodType" name="foodType" required>
+                <option value="">Select food type</option>
+                <option value="non-perishable">Non-perishable</option>
+                <option value="perishable">Perishable</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity of Donation</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter quantity (kg)" required>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Your Location</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="Click 'Get Location' to autofill" readonly>
+            <button type="button" class="btn btn-success btn-location" onclick="getLocation()">Get Location</button>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    donorForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const donorData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value,
+            foodType: document.getElementById('foodType').value,
+            quantity: document.getElementById('quantity').value,
+            location: document.getElementById('location').value,
+            password: document.getElementById('password').value,  // Include password
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/register-donor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(donorData)
+            });
+
+            if (response.ok) {
+                alert('Registration Successful!');
+                donorForm.reset();
+            } else {
+                alert('Failed to register donor');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred during registration');
+        }
+    });
+</script>
+
+</body>
+</html>
